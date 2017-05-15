@@ -42,7 +42,7 @@ class TicTacToe
   def win_state(pieces)
     ['x','o'].each do |m|
       tally = [[0,0,0],[0,0,0],[0,0,0]]
-      pieces.each do |k, v|
+      pieces.each do |k, v| #convert pieces to 2d array
         if v == m
           tally[k[0].to_i][k[1].to_i] +=1
         end
@@ -56,6 +56,9 @@ class TicTacToe
         return 0 if [tally[0][x],tally[1][x],tally[2][x]].all? {|j| j == 1}
       end
       
+      #diagonals
+      return 0 if [tally[0][0],tally[1][1],tally[2][2]].all? {|j| j == 1}
+      return 0 if [tally[0][2],tally[1][1],tally[2][0]].all? {|j| j == 1}
       
     end
     return 1
