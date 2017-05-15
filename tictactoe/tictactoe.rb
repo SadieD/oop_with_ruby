@@ -16,14 +16,18 @@ class TicTacToe
   end
   
   def start
-    2.times { players.push(Player.new) }
+    (1..2).each do |x|
+      system "clear"
+      puts "Enter player #{x} name: "
+      players.push(Player.new(gets.chomp))
+    end
     @board = Board.new(3)
     turn
   end
   
   def turn
     board.draw_board(@pieces)
-    if win_state(@pieces) == 1
+    if win_state(@pieces) == 0
       puts "#{@players[@turn].name}'s turn: "
       validate_move(gets.chomp)
     else
@@ -34,7 +38,7 @@ class TicTacToe
   def validate_move(move)
     if !(@pieces.has_key? move) && (move =~ /^[0-2][0-2]$/)
       @turn == 0 ? @pieces[move] = 'x' : @pieces[move] = 'o'
-      @turn == 0 ? @turn = 1 : @turn = 0 if win_state(@pieces) == 1
+      @turn == 0 ? @turn = 1 : @turn = 0 if win_state(@pieces) == 0
     end
     turn
   end
@@ -49,19 +53,18 @@ class TicTacToe
       end
       
       tally.each do |x| #rows
-       return 0 if x.all? { |i| i == 1 }
+       return 1 if x.all? { |i| i == 1 }
       end
       
       (0..tally.size-1).each do |x| #columns
-        return 0 if [tally[0][x],tally[1][x],tally[2][x]].all? {|j| j == 1}
+        return 1 if [tally[0][x],tally[1][x],tally[2][x]].all? {|j| j == 1}
       end
       
       #diagonals
-      return 0 if [tally[0][0],tally[1][1],tally[2][2]].all? {|j| j == 1}
-      return 0 if [tally[0][2],tally[1][1],tally[2][0]].all? {|j| j == 1}
-      
+      return 1 if [tally[0][0],tally[1][1],tally[2][2]].all? {|j| j == 1}
+      return 1 if [tally[0][2],tally[1][1],tally[2][0]].all? {|j| j == 1}
     end
-    return 1
+    return 0
   end
 
 end
